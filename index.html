@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dino Adventure</title>
+
+    <style>
+
+        /* CONFIGURAÇÕES GERAIS */
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        :root{
+            /*
+            Altura responsiva do chão.
+
+            Mínimo: 60px
+            Preferencial: 12% da altura da tela
+            Máximo: 100px
+            */
+            --ground-height:clamp(60px, 12vh, 100px);
+        }
+
+        html,
+        body{
+            width:100%;
+            height:100%;
+            overflow:hidden;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+
+            background:linear-gradient(
+                to bottom,
+                #87CEEB,
+                #B0E0E6,
+                #E0F6FF
+            );
+        }
+
+        /* ÁREA DO JOGO */
+        #game{
+            position:relative;
+
+            width:100vw;
+            height:100vh;
+
+            overflow:hidden;
+        }
+
+        /* SOL */
+        #sun{
+            position:absolute;
+
+            top:5vh;
+            right:7vw;
+
+            width:clamp(90px, 10vw, 150px);
+            height:clamp(90px, 10vw, 150px);
+
+            border-radius:50%;
+
+            background:#FFD700;
+
+            box-shadow:
+                0 0 30px #FFD700,
+                0 0 70px #FFD700;
+
+            z-index:20;
+        }
+
+        /* NUVENS */
+        .cloud{
+            position:absolute;
+
+            width:clamp(140px, 15vw, 240px);
+            height:clamp(50px, 6vw, 90px);
+
+            background:white;
+
+            border-radius:100px;
+
+            opacity:0.90;
+
+            z-index:30;
+        }
+
+        /*
+        Partes adicionais para deixar
+        as nuvens com formato mais bonito.
+        */
+        .cloud::before{
+            content:"";
+
+            position:absolute;
+
+            width:45%;
+            height:100%;
+
+            left:15%;
+            top:-45%;
+
+            background:white;
+
+            border-radius:50%;
+        }
+
+        .cloud::after{
+            content:"";
+
+            position:absolute;
+
+            width:40%;
+            height:85%;
+
+            right:12%;
+            top:-35%;
+
+            background:white;
+
+            border-radius:50%;
+        }
+
+        .cloud1{
+            top:13vh;
+
+            animation:
+                cloudMove 20s linear infinite;
+        }
+
+        .cloud2{
+            top:30vh;
+
+            animation:
+                cloudMove 32s linear infinite;
+
+            animation-delay:-12s;
+        }
+
+        @keyframes cloudMove{
+
+            from{
+                left:110%;
+            }
+
+            to{
+                left:-300px;
+            }
+
+        }
+
+        /* MONTANHAS */
+        .mountains{
+            position:absolute;
+
+            left:0;
+            bottom:var(--ground-height);
+
+            width:100%;
+            height:55vh;
+
+            z-index:10;
+        }
+
+        .mountain{
+            position:absolute;
+
+            bottom:0;
+
+            width:0;
+            height:0;
+
+            border-left:20vw solid transparent;
+            border-right:20vw solid transparent;
+        }
+
+        .m1{
+            left:-8vw;
+
+            border-bottom:
+                40vh solid #7c8db5;
+        }
+
+        .m2{
+            left:24vw;
+
+            border-bottom:
+                55vh solid #7082ad;
+        }
+
+        .m3{
+            left:62vw;
+
+            border-bottom:
+                43vh solid #8698c0;
+        }
+
+        /* CHÃO */
+        .grass{
+            position:absolute;
+
+            left:0;
+            bottom:0;
+
+            width:100%;
+            height:var(--ground-height);
+
+            background:linear-gradient(
+                to bottom,
+                #63d471 0%,
+                #3aaa5d 35%,
+                #2e8b57 100%
+            );
+
+            border-top:5px solid #78e082;
+
+            z-index:50;
+        }
+
+        /* DINOSSAURO */
+        #dino{
+            position:absolute;
+
+            width:70px;
+            height:70px;
+
+            left:clamp(50px, 6vw, 110px);
+            bottom:var(--ground-height);
+
+            z-index:100;
+        }
+
+        /* CORPO DO DINOSSAURO */
+        .body{
+            position:absolute;
+
+            width:40px;
+            height:35px;
+
+            left:15px;
+            bottom:15px;
+
+            background:#2ecc71;
+
+            border-radius:10px;
+        }
+
+        /* CABEÇA */
+        .head{
+            position:absolute;
+
+            width:28px;
+            height:27px;
+
+            top:3px;
+            right:2px;
+
+            background:#2ecc71;
+
+            border-radius:8px 8px 4px 8px;
+        }
+
+        /* BOCA */
+        .head::after{
+            content:"";
+
+            position:absolute;
+
+            width:13px;
+            height:3px;
+
+            right:0;
+            bottom:5px;
+
+            background:#157a42;
+
+            border-radius:2px;
+        }
+
+        /* OLHO */
+        .eye{
+            position:absolute;
+
+            width:6px;
+            height:6px;
+
+            top:6px;
+            right:6px;
+
+            background:black;
+
+            border-radius:50%;
+        }
+
+        /* BRANCO DO OLHO */
+        .eye::after{
+            content:"";
+
+            position:absolute;
+
+            width:2px;
+            height:2px;
+
+            top:1px;
+            left:1px;
+
+            background:white;
+
+            border-radius:50%;
+        }
+
+        /* BRAÇOS */
+        .arm{
+            position:absolute;
+
+            width:8px;
+            height:15px;
+
+            background:#27ae60;
+
+            border-radius:4px;
+
+            z-index:2;
+        }
+
+        .arm1{
+            top:28px;
+            right:17px;
+
+            transform:rotate(-15deg);
+        }
+
+        .arm2{
+            top:30px;
+            right:27px;
+
+            transform:rotate(15deg);
+        }
+
+        /* PERNAS */
+        .leg{
+            position:absolute;
+
+            width:9px;
+            height:20px;
+
+            bottom:0;
+
+            background:#27ae60;
+
+            border-radius:4px;
+        }
+
+        .leg1{
+            left:23px;
+        }
+
+        .leg2{
+            left:43px;
+        }
+
+        /* PÉS */
+        .leg::after{
+            content:"";
+
+            position:absolute;
+
+            width:13px;
+            height:6px;
+
+            left:0;
+            bottom:0;
+
+            background:#27ae60;
+
+            border-radius:4px;
+        }
+
+        /* CAUDA */
+        .tail{
+            position:absolute;
+
+            width:29px;
+            height:11px;
+
+            left:-2px;
+            bottom:27px;
+
+            background:#2ecc71;
+
+            border-radius:10px 2px 2px 10px;
+
+            transform:rotate(-20deg);
+            transform-origin:right center;
+        }
+
+        /* OBSTÁCULOS */
+        .obstacle{
+            position:absolute;
+
+            bottom:var(--ground-height);
+
+            background:linear-gradient(
+                to bottom,
+                #1cab36,
+                #006400
+            );
+
+            border:2px solid #075b16;
+
+            border-radius:6px 6px 3px 3px;
+
+            box-shadow:
+                inset 4px 0 rgba(255,255,255,0.15);
+
+            z-index:90;
+        }
+
+        /*
+        Pequeno detalhe lateral para
+        os obstáculos lembrarem cactos.
+        */
+        .obstacle::before{
+            content:"";
+
+            position:absolute;
+
+            width:40%;
+            height:35%;
+
+            left:-35%;
+            top:35%;
+
+            background:#118127;
+
+            border-radius:5px 0 0 5px;
+        }
+
+        .obstacle::after{
+            content:"";
+
+            position:absolute;
+
+            width:40%;
+            height:27%;
+
+            right:-35%;
+            top:20%;
+
+            background:#118127;
+
+            border-radius:0 5px 5px 0;
+        }
+
+        /* SCORE */
+        #score{
+            position:absolute;
+
+            top:20px;
+            right:30px;
+
+            min-width:130px;
+
+            padding:10px 18px;
+
+            font-size:clamp(25px, 3vw, 38px);
+            font-weight:bold;
+            text-align:center;
+
+            color:#333;
+
+            background:rgba(255,255,255,0.55);
+
+            border:2px solid rgba(255,255,255,0.8);
+            border-radius:12px;
+
+            z-index:200;
+        }
+
+        /* INSTRUÇÃO */
+        #instructions{
+            position:absolute;
+
+            top:20px;
+            left:25px;
+
+            padding:10px 15px;
+
+            font-size:clamp(13px, 1.5vw, 18px);
+
+            color:#333;
+
+            background:rgba(255,255,255,0.55);
+
+            border-radius:10px;
+
+            z-index:200;
+        }
+
+        /*
+        AJUSTES PARA CELULAR
+        */
+        @media (max-width:600px){
+
+            :root{
+                --ground-height:70px;
+            }
+
+            #dino{
+                left:35px;
+
+                transform:scale(0.90);
+                transform-origin:bottom left;
+            }
+
+            #instructions{
+                top:10px;
+                left:10px;
+            }
+
+            #score{
+                top:10px;
+                right:10px;
+
+                min-width:85px;
+            }
+
+            .mountain{
+                border-left-width:28vw;
+                border-right-width:28vw;
+            }
+
+            .m1{
+                left:-15vw;
+            }
+
+            .m2{
+                left:27vw;
+            }
+
+            .m3{
+                left:70vw;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- SOL -->
+        <div id="sun"></div>
+
+        <!-- NUVENS -->
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+
+        <!-- MONTANHAS -->
+        <div class="mountains">
+            <div class="mountain m1"></div>
+            <div class="mountain m2"></div>
+            <div class="mountain m3"></div>
+        </div>
+
+        <!-- CHÃO -->
+        <div class="grass"></div>
+
+        <!-- INSTRUÇÕES -->
+        <div id="instructions">
+            Espaço, ↑ ou clique para pular
+        </div>
+
+        <!-- PONTUAÇÃO -->
+        <div id="score">0</div>
+
+    <!-- DINOSSAURO -->
+<div id="dino">
+
+    <div class="head">
+        <div class="eye"></div>
+    </div>
+
+    <div class="body"></div>
+
+    <div class="arm arm1"></div>
+    <div class="arm arm2"></div>
+
+    <div class="leg leg1"></div>
+    <div class="leg leg2"></div>
+
+    <div class="tail"></div>
+
+</div>
+
+<!-- TELA DE GAME OVER -->
+<div id="gameOverScreen">
+
+    <div class="game-over-card">
+
+        <div class="game-over-icon">☠</div>
+
+        <h1>GAME OVER</h1>
+
+        <p>Sua pontuação foi:</p>
+
+        <div id="finalScore">0</div>
+
+        <button id="restartButton">
+            Jogar novamente
+        </button>
+
+        <span>
+            Pressione Enter ou clique no botão
+        </span>
+
+    </div>
+
+</div>
+
+</div>
+            <div class="head">
+                <div class="eye"></div>
+            </div>
+
+            <div class="body"></div>
+
+            <div class="arm arm1"></div>
+            <div class="arm arm2"></div>
+
+            <div class="leg leg1"></div>
+            <div class="leg leg2"></div>
+
+            <div class="tail"></div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        /* ELEMENTOS DO JOGO */
+        const game =
+            document.getElementById("game");
+
+        const dino =
+            document.getElementById("dino");
+
+        const scoreElement =
+            document.getElementById("score");
+
+        const grass =
+            document.querySelector(".grass");
+
+        /* VARIÁVEIS GERAIS */
+        let score = 0;
+        let gameOver = false;
+
+        /*
+        VELOCIDADE INICIAL DOS CACTOS
+
+        7  = lenta
+        9  = normal
+        11 = rápida
+        */
+        let gameSpeed = 9;
+
+        /* TIPOS DE CACTO */
+        const obstacleTypes = [
+            {
+                width:25,
+                height:45
+            },
+            {
+                width:30,
+                height:60
+            },
+            {
+                width:38,
+                height:70
+            }
+        ];
+
+        /* POSIÇÃO DO CHÃO */
+        function getGroundPosition(){
+            return grass.offsetHeight;
+        }
+
+        let groundPosition =
+            getGroundPosition();
+
+        /* VARIÁVEIS DO PULO */
+        let dinoPosition =
+            groundPosition;
+
+        let verticalSpeed = 0;
+        let isJumping = false;
+        let jumpButtonPressed = false;
+
+        /*
+        CONFIGURAÇÕES DO PULO
+
+        initialJumpForce:
+        controla a altura do pulo alto.
+
+        gravity:
+        controla a velocidade da subida
+        e da queda.
+
+        jumpCutMultiplier:
+        controla a altura do pulo curto.
+        */
+        const initialJumpForce = 14;
+        const gravity = 0.60;
+        const jumpCutMultiplier = 0.30;
+
+        /* COMEÇAR O PULO */
+        function startJump(){
+
+            if(gameOver){
+                return;
+            }
+
+            if(!isJumping){
+
+                isJumping = true;
+                jumpButtonPressed = true;
+
+                verticalSpeed =
+                    initialJumpForce;
+
+            }
+
+        }
+
+        /* SOLTAR O BOTÃO DO PULO */
+        function stopJump(){
+
+            if(!jumpButtonPressed){
+                return;
+            }
+
+            jumpButtonPressed = false;
+
+            /*
+            Quando o botão é solto enquanto
+            o dinossauro ainda está subindo,
+            a velocidade é reduzida.
+
+            Isso cria o pulo curto.
+            */
+            if(
+                isJumping &&
+                verticalSpeed > 0
+            ){
+                verticalSpeed *=
+                    jumpCutMultiplier;
+            }
+
+        }
+
+        /* PRESSIONAR TECLADO */
+        document.addEventListener(
+            "keydown",
+            (event)=>{
+
+                if(
+                    event.code === "Space" ||
+                    event.code === "ArrowUp"
+                ){
+                    event.preventDefault();
+
+                    if(!event.repeat){
+                        startJump();
+                    }
+                }
+
+            }
+        );
+
+        /* SOLTAR TECLADO */
+        document.addEventListener(
+            "keyup",
+            (event)=>{
+
+                if(
+                    event.code === "Space" ||
+                    event.code === "ArrowUp"
+                ){
+                    event.preventDefault();
+
+                    stopJump();
+                }
+
+            }
+        );
+
+        /* CLIQUE OU TOQUE */
+        game.addEventListener(
+            "pointerdown",
+            (event)=>{
+
+                event.preventDefault();
+
+                startJump();
+
+            }
+        );
+
+        /* SOLTAR CLIQUE OU TOQUE */
+        document.addEventListener(
+            "pointerup",
+            ()=>{
+                stopJump();
+            }
+        );
+
+        document.addEventListener(
+            "pointercancel",
+            ()=>{
+                stopJump();
+            }
+        );
+
+        /* EVITAR BOTÃO PRESO */
+        window.addEventListener(
+            "blur",
+            ()=>{
+                stopJump();
+            }
+        );
+
+        /* ATUALIZAR O PULO */
+        function updateJump(){
+
+            if(
+                isJumping &&
+                !gameOver
+            ){
+
+                /*
+                Movimenta verticalmente
+                o dinossauro.
+                */
+                dinoPosition +=
+                    verticalSpeed;
+
+                /* Aplicar gravidade */
+                verticalSpeed -= gravity;
+
+                /* Verificar o chão */
+                if(
+                    dinoPosition <=
+                    groundPosition
+                ){
+
+                    dinoPosition =
+                        groundPosition;
+
+                    verticalSpeed = 0;
+                    isJumping = false;
+                    jumpButtonPressed = false;
+
+                }
+
+                dino.style.bottom =
+                    dinoPosition + "px";
+
+            }
+
+            requestAnimationFrame(
+                updateJump
+            );
+
+        }
+
+        /* AJUSTAR EM CASO DE REDIMENSIONAMENTO */
+        window.addEventListener(
+            "resize",
+            ()=>{
+
+                groundPosition =
+                    getGroundPosition();
+
+                if(!isJumping){
+
+                    dinoPosition =
+                        groundPosition;
+
+                    dino.style.bottom =
+                        dinoPosition + "px";
+
+                }
+
+            }
+        );
+
+        /* PONTUAÇÃO */
+        const scoreInterval =
+            setInterval(()=>{
+
+                if(gameOver){
+                    return;
+                }
+
+                score++;
+
+                scoreElement.innerText =
+                    score;
+
+                /*
+                Aumentar lentamente a velocidade.
+
+                A cada 200 pontos, a velocidade
+                aumenta 0.25.
+                */
+                if(score % 200 === 0){
+                    gameSpeed += 0.25;
+                }
+
+            },100);
+
+        /* CRIAR OBSTÁCULOS */
+        function createObstacle(){
+
+            if(gameOver){
+                return;
+            }
+
+            const obstacle =
+                document.createElement("div");
+
+            obstacle.classList.add(
+                "obstacle"
+            );
+
+            /* Escolher tamanho aleatório */
+            const type =
+                obstacleTypes[
+                    Math.floor(
+                        Math.random() *
+                        obstacleTypes.length
+                    )
+                ];
+
+            obstacle.style.width =
+                type.width + "px";
+
+            obstacle.style.height =
+                type.height + "px";
+
+            game.appendChild(
+                obstacle
+            );
+
+            /*
+            O cacto começa fora da tela,
+            no lado direito.
+            */
+            let position =
+                game.clientWidth + 100;
+
+            obstacle.style.left =
+                position + "px";
+
+            /* MOVIMENTAR CACTO */
+            const move =
+                setInterval(()=>{
+
+                    if(gameOver){
+
+                        clearInterval(move);
+
+                        return;
+                    }
+
+                    /*
+                    Diminuir left faz o cacto
+                    andar para a esquerda.
+                    */
+                    position -= gameSpeed;
+
+                    obstacle.style.left =
+                        position + "px";
+
+                    /* ÁREAS DE COLISÃO */
+                    const obstacleRect =
+                        obstacle.getBoundingClientRect();
+
+                    const dinoRect =
+                        dino.getBoundingClientRect();
+
+                    /*
+                    Margens para deixar a colisão
+                    mais justa.
+                    */
+                    const dinoPaddingX = 8;
+                    const dinoPaddingTop = 5;
+                    const dinoPaddingBottom = 4;
+
+                    const obstaclePaddingX = 2;
+
+                    /* DETECTAR COLISÃO */
+                    if(
+                        obstacleRect.left +
+                            obstaclePaddingX
+                            <
+                        dinoRect.right -
+                            dinoPaddingX
+                        &&
+
+                        obstacleRect.right -
+                            obstaclePaddingX
+                            >
+                        dinoRect.left +
+                            dinoPaddingX
+                        &&
+
+                        obstacleRect.top
+                            <
+                        dinoRect.bottom -
+                            dinoPaddingBottom
+                        &&
+
+                        obstacleRect.bottom
+                            >
+                        dinoRect.top +
+                            dinoPaddingTop
+                    ){
+
+                        gameOver = true;
+
+                        clearInterval(
+                            scoreInterval
+                        );
+
+                        alert(
+                            "GAME OVER!\n\n" +
+                            "Pontuação: " +
+                            score
+                        );
+
+                    }
+
+                    /*
+                    Remover somente quando o
+                    cacto sair pelo lado esquerdo.
+                    */
+                    if(position < -150){
+
+                        clearInterval(move);
+
+                        obstacle.remove();
+
+                    }
+
+                },20);
+
+            /*
+            Tempo até o próximo obstáculo.
+
+            Mínimo: 1 segundo
+            Máximo: 3 segundos
+            */
+            const nextSpawn =
+                Math.random() * 2000 + 1000;
+
+            setTimeout(
+                createObstacle,
+                nextSpawn
+            );
+
+        }
+
+        /* INICIAR O JOGO */
+        dino.style.bottom =
+            groundPosition + "px";
+
+        updateJump();
+
+        createObstacle();
+
+    </script>
+
+</body>
+</html>
