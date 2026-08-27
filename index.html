@@ -12,7 +12,6 @@
     <title>Dino Adventure</title>
 
     <style>
-
         /* CONFIGURAÇÕES GERAIS */
         *{
             margin:0;
@@ -21,13 +20,6 @@
         }
 
         :root{
-            /*
-            Altura responsiva do chão.
-
-            Mínimo: 60px
-            Preferencial: 12% da altura da tela
-            Máximo: 100px
-            */
             --ground-height:clamp(60px, 12vh, 100px);
         }
 
@@ -52,11 +44,11 @@
         /* ÁREA DO JOGO */
         #game{
             position:relative;
-
             width:100vw;
             height:100vh;
-
             overflow:hidden;
+            user-select:none;
+            touch-action:none;
         }
 
         /* SOL */
@@ -69,9 +61,8 @@
             width:clamp(90px, 10vw, 150px);
             height:clamp(90px, 10vw, 150px);
 
-            border-radius:50%;
-
             background:#FFD700;
+            border-radius:50%;
 
             box-shadow:
                 0 0 30px #FFD700,
@@ -88,18 +79,12 @@
             height:clamp(50px, 6vw, 90px);
 
             background:white;
-
             border-radius:100px;
 
             opacity:0.90;
-
             z-index:30;
         }
 
-        /*
-        Partes adicionais para deixar
-        as nuvens com formato mais bonito.
-        */
         .cloud::before{
             content:"";
 
@@ -112,7 +97,6 @@
             top:-45%;
 
             background:white;
-
             border-radius:50%;
         }
 
@@ -128,28 +112,21 @@
             top:-35%;
 
             background:white;
-
             border-radius:50%;
         }
 
         .cloud1{
             top:13vh;
-
-            animation:
-                cloudMove 20s linear infinite;
+            animation:cloudMove 20s linear infinite;
         }
 
         .cloud2{
             top:30vh;
-
-            animation:
-                cloudMove 32s linear infinite;
-
+            animation:cloudMove 32s linear infinite;
             animation-delay:-12s;
         }
 
         @keyframes cloudMove{
-
             from{
                 left:110%;
             }
@@ -157,7 +134,6 @@
             to{
                 left:-300px;
             }
-
         }
 
         /* MONTANHAS */
@@ -175,7 +151,6 @@
 
         .mountain{
             position:absolute;
-
             bottom:0;
 
             width:0;
@@ -187,23 +162,17 @@
 
         .m1{
             left:-8vw;
-
-            border-bottom:
-                40vh solid #7c8db5;
+            border-bottom:40vh solid #7c8db5;
         }
 
         .m2{
             left:24vw;
-
-            border-bottom:
-                55vh solid #7082ad;
+            border-bottom:55vh solid #7082ad;
         }
 
         .m3{
             left:62vw;
-
-            border-bottom:
-                43vh solid #8698c0;
+            border-bottom:43vh solid #8698c0;
         }
 
         /* CHÃO */
@@ -241,8 +210,8 @@
             z-index:100;
         }
 
-        /* CORPO DO DINOSSAURO */
-        .body{
+        /* CORPO */
+        .dino-body{
             position:absolute;
 
             width:40px;
@@ -252,12 +221,11 @@
             bottom:15px;
 
             background:#2ecc71;
-
             border-radius:10px;
         }
 
         /* CABEÇA */
-        .head{
+        .dino-head{
             position:absolute;
 
             width:28px;
@@ -272,7 +240,7 @@
         }
 
         /* BOCA */
-        .head::after{
+        .dino-head::after{
             content:"";
 
             position:absolute;
@@ -284,12 +252,11 @@
             bottom:5px;
 
             background:#157a42;
-
             border-radius:2px;
         }
 
         /* OLHO */
-        .eye{
+        .dino-eye{
             position:absolute;
 
             width:6px;
@@ -299,12 +266,10 @@
             right:6px;
 
             background:black;
-
             border-radius:50%;
         }
 
-        /* BRANCO DO OLHO */
-        .eye::after{
+        .dino-eye::after{
             content:"";
 
             position:absolute;
@@ -316,32 +281,30 @@
             left:1px;
 
             background:white;
-
             border-radius:50%;
         }
 
         /* BRAÇOS */
-        .arm{
+        .dino-arm{
             position:absolute;
 
             width:8px;
             height:15px;
 
             background:#27ae60;
-
             border-radius:4px;
 
             z-index:2;
         }
 
-        .arm1{
+        .dino-arm-one{
             top:28px;
             right:17px;
 
             transform:rotate(-15deg);
         }
 
-        .arm2{
+        .dino-arm-two{
             top:30px;
             right:27px;
 
@@ -349,7 +312,7 @@
         }
 
         /* PERNAS */
-        .leg{
+        .dino-leg{
             position:absolute;
 
             width:9px;
@@ -358,20 +321,19 @@
             bottom:0;
 
             background:#27ae60;
-
             border-radius:4px;
         }
 
-        .leg1{
+        .dino-leg-one{
             left:23px;
         }
 
-        .leg2{
+        .dino-leg-two{
             left:43px;
         }
 
         /* PÉS */
-        .leg::after{
+        .dino-leg::after{
             content:"";
 
             position:absolute;
@@ -383,12 +345,11 @@
             bottom:0;
 
             background:#27ae60;
-
             border-radius:4px;
         }
 
         /* CAUDA */
-        .tail{
+        .dino-tail{
             position:absolute;
 
             width:29px;
@@ -405,7 +366,7 @@
             transform-origin:right center;
         }
 
-        /* OBSTÁCULOS */
+        /* CACTOS */
         .obstacle{
             position:absolute;
 
@@ -418,7 +379,6 @@
             );
 
             border:2px solid #075b16;
-
             border-radius:6px 6px 3px 3px;
 
             box-shadow:
@@ -427,10 +387,6 @@
             z-index:90;
         }
 
-        /*
-        Pequeno detalhe lateral para
-        os obstáculos lembrarem cactos.
-        */
         .obstacle::before{
             content:"";
 
@@ -463,7 +419,7 @@
             border-radius:0 5px 5px 0;
         }
 
-        /* SCORE */
+        /* PONTUAÇÃO */
         #score{
             position:absolute;
 
@@ -471,7 +427,6 @@
             right:30px;
 
             min-width:130px;
-
             padding:10px 18px;
 
             font-size:clamp(25px, 3vw, 38px);
@@ -480,7 +435,7 @@
 
             color:#333;
 
-            background:rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.60);
 
             border:2px solid rgba(255,255,255,0.8);
             border-radius:12px;
@@ -488,7 +443,7 @@
             z-index:200;
         }
 
-        /* INSTRUÇÃO */
+        /* INSTRUÇÕES */
         #instructions{
             position:absolute;
 
@@ -501,32 +456,221 @@
 
             color:#333;
 
-            background:rgba(255,255,255,0.55);
+            background:rgba(255,255,255,0.60);
 
             border-radius:10px;
 
             z-index:200;
         }
 
-        /*
-        AJUSTES PARA CELULAR
-        */
-        @media (max-width:600px){
+        /* FUNDO DAS TELAS */
+        #startScreen,
+        #gameOverScreen{
+            position:absolute;
+            inset:0;
 
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            width:100%;
+            height:100%;
+
+            padding:20px;
+
+            background:rgba(10, 25, 35, 0.68);
+            backdrop-filter:blur(5px);
+
+            z-index:2000;
+        }
+
+        /* ESCONDER TELA INICIAL */
+        #startScreen.hidden{
+            display:none;
+        }
+
+        /* GAME OVER COMEÇA ESCONDIDO */
+        #gameOverScreen{
+            display:none;
+        }
+
+        /* MOSTRAR GAME OVER */
+        #gameOverScreen.show{
+            display:flex;
+        }
+
+        /* CARTÕES DAS TELAS */
+        .start-card,
+        .game-over-card{
+            width:90%;
+            max-width:500px;
+
+            padding:35px;
+
+            text-align:center;
+
+            background:linear-gradient(
+                145deg,
+                #ffffff,
+                #e8f8ee
+            );
+
+            border:5px solid #2ecc71;
+            border-radius:25px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.45),
+                inset 0 0 25px rgba(46,204,113,0.15);
+
+            animation:showCard 0.40s ease;
+        }
+
+        @keyframes showCard{
+            from{
+                opacity:0;
+                transform:translateY(30px) scale(0.90);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0) scale(1);
+            }
+        }
+
+        /* ÍCONES */
+        .start-icon,
+        .game-over-icon{
+            margin-bottom:8px;
+
+            font-size:65px;
+        }
+
+        .start-icon{
+            animation:dinoFloat 1.3s ease-in-out infinite;
+        }
+
+        @keyframes dinoFloat{
+            0%,
+            100%{
+                transform:translateY(0);
+            }
+
+            50%{
+                transform:translateY(-8px);
+            }
+        }
+
+        /* TÍTULOS */
+        .start-card h1,
+        .game-over-card h1{
+            margin-bottom:15px;
+
+            font-size:clamp(36px, 6vw, 60px);
+            font-weight:900;
+        }
+
+        .start-card h1{
+            color:#229954;
+        }
+
+        .game-over-card h1{
+            color:#e74c3c;
+        }
+
+        /* TEXTOS DOS CARTÕES */
+        .start-card p,
+        .game-over-card p{
+            margin-bottom:22px;
+
+            font-size:20px;
+            line-height:1.5;
+
+            color:#444;
+        }
+
+        /* PONTUAÇÃO FINAL */
+        #finalScore{
+            margin-top:-15px;
+            margin-bottom:25px;
+
+            font-size:clamp(50px, 8vw, 75px);
+            font-weight:bold;
+
+            color:#27ae60;
+        }
+
+        /* BOTÕES */
+        #startButton,
+        #restartButton{
+            padding:16px 34px;
+
+            font-size:20px;
+            font-weight:bold;
+
+            color:white;
+
+            background:linear-gradient(
+                to bottom,
+                #2ecc71,
+                #219653
+            );
+
+            border:none;
+            border-radius:12px;
+
+            cursor:pointer;
+
+            box-shadow:
+                0 7px 0 #176d3a,
+                0 10px 20px rgba(0,0,0,0.25);
+
+            transition:
+                filter 0.15s,
+                transform 0.15s,
+                box-shadow 0.15s;
+        }
+
+        #startButton:hover,
+        #restartButton:hover{
+            filter:brightness(1.08);
+            transform:translateY(-2px);
+        }
+
+        #startButton:active,
+        #restartButton:active{
+            transform:translateY(5px);
+
+            box-shadow:
+                0 2px 0 #176d3a,
+                0 5px 10px rgba(0,0,0,0.20);
+        }
+
+        .start-card span,
+        .game-over-card span{
+            display:block;
+
+            margin-top:22px;
+
+            font-size:14px;
+
+            color:#777;
+        }
+
+        /* AJUSTES PARA CELULAR */
+        @media (max-width:600px){
             :root{
                 --ground-height:70px;
             }
 
             #dino{
                 left:35px;
-
-                transform:scale(0.90);
-                transform-origin:bottom left;
             }
 
             #instructions{
                 top:10px;
                 left:10px;
+
+                max-width:180px;
             }
 
             #score{
@@ -553,8 +697,16 @@
                 left:70vw;
             }
 
-        }
+            .start-card,
+            .game-over-card{
+                padding:25px;
+            }
 
+            #startButton,
+            #restartButton{
+                width:100%;
+            }
+        }
     </style>
 </head>
 
@@ -587,71 +739,88 @@
         <!-- PONTUAÇÃO -->
         <div id="score">0</div>
 
-    <!-- DINOSSAURO -->
-<div id="dino">
+        <!-- DINOSSAURO -->
+        <div id="dino">
 
-    <div class="head">
-        <div class="eye"></div>
-    </div>
-
-    <div class="body"></div>
-
-    <div class="arm arm1"></div>
-    <div class="arm arm2"></div>
-
-    <div class="leg leg1"></div>
-    <div class="leg leg2"></div>
-
-    <div class="tail"></div>
-
-</div>
-
-<!-- TELA DE GAME OVER -->
-<div id="gameOverScreen">
-
-    <div class="game-over-card">
-
-        <div class="game-over-icon">☠</div>
-
-        <h1>GAME OVER</h1>
-
-        <p>Sua pontuação foi:</p>
-
-        <div id="finalScore">0</div>
-
-        <button id="restartButton">
-            Jogar novamente
-        </button>
-
-        <span>
-            Pressione Enter ou clique no botão
-        </span>
-
-    </div>
-
-</div>
-
-</div>
-            <div class="head">
-                <div class="eye"></div>
+            <div class="dino-head">
+                <div class="dino-eye"></div>
             </div>
 
-            <div class="body"></div>
+            <div class="dino-body"></div>
 
-            <div class="arm arm1"></div>
-            <div class="arm arm2"></div>
+            <div class="dino-arm dino-arm-one"></div>
+            <div class="dino-arm dino-arm-two"></div>
 
-            <div class="leg leg1"></div>
-            <div class="leg leg2"></div>
+            <div class="dino-leg dino-leg-one"></div>
+            <div class="dino-leg dino-leg-two"></div>
 
-            <div class="tail"></div>
+            <div class="dino-tail"></div>
+
+        </div>
+
+        <!-- TELA INICIAL -->
+        <div id="startScreen">
+
+            <div class="start-card">
+
+                <div class="start-icon">
+                    🦖
+                </div>
+
+                <h1>Dino Adventure</h1>
+
+                <p>
+                    Pule os cactos e consiga a maior pontuação!
+                </p>
+
+                <button
+                    id="startButton"
+                    type="button"
+                >
+                    Iniciar jogo
+                </button>
+
+                <span>
+                    Clique no botão ou pressione Enter
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- TELA DE GAME OVER -->
+        <div id="gameOverScreen">
+
+            <div class="game-over-card">
+
+                <div class="game-over-icon">
+                    💥
+                </div>
+
+                <h1>GAME OVER</h1>
+
+                <p>Sua pontuação foi:</p>
+
+                <div id="finalScore">0</div>
+
+                <button
+                    id="restartButton"
+                    type="button"
+                >
+                    Jogar novamente
+                </button>
+
+                <span>
+                    Clique no botão ou pressione Enter
+                </span>
+
+            </div>
 
         </div>
 
     </div>
 
     <script>
-
         /* ELEMENTOS DO JOGO */
         const game =
             document.getElementById("game");
@@ -659,26 +828,46 @@
         const dino =
             document.getElementById("dino");
 
-        const scoreElement =
-            document.getElementById("score");
-
         const grass =
             document.querySelector(".grass");
 
-        /* VARIÁVEIS GERAIS */
+        const scoreElement =
+            document.getElementById("score");
+
+        const startScreen =
+            document.getElementById("startScreen");
+
+        const startButton =
+            document.getElementById("startButton");
+
+        const gameOverScreen =
+            document.getElementById("gameOverScreen");
+
+        const finalScoreElement =
+            document.getElementById("finalScore");
+
+        const restartButton =
+            document.getElementById("restartButton");
+
+        /* ESTADO GERAL */
         let score = 0;
+
+        let gameStarted = false;
         let gameOver = false;
 
+        const initialGameSpeed = 9;
+
+        let gameSpeed =
+            initialGameSpeed;
+
         /*
-        VELOCIDADE INICIAL DOS CACTOS
-
-        7  = lenta
-        9  = normal
-        11 = rápida
+        Identifica a partida atual e impede
+        temporizadores antigos de criarem
+        cactos depois de reiniciar.
         */
-        let gameSpeed = 9;
+        let gameGeneration = 0;
 
-        /* TIPOS DE CACTO */
+        /* TAMANHOS DOS CACTOS */
         const obstacleTypes = [
             {
                 width:25,
@@ -710,27 +899,109 @@
         let isJumping = false;
         let jumpButtonPressed = false;
 
-        /*
-        CONFIGURAÇÕES DO PULO
-
-        initialJumpForce:
-        controla a altura do pulo alto.
-
-        gravity:
-        controla a velocidade da subida
-        e da queda.
-
-        jumpCutMultiplier:
-        controla a altura do pulo curto.
-        */
+        /* CONFIGURAÇÕES DO PULO */
         const initialJumpForce = 14;
-        const gravity = 0.60;
+        const gravity = 0.50;
         const jumpCutMultiplier = 0.30;
 
-        /* COMEÇAR O PULO */
+        /* PREPARAR O DINOSSAURO */
+        function resetDino(){
+
+            groundPosition =
+                getGroundPosition();
+
+            dinoPosition =
+                groundPosition;
+
+            verticalSpeed = 0;
+            isJumping = false;
+            jumpButtonPressed = false;
+
+            dino.style.bottom =
+                dinoPosition + "px";
+        }
+
+        /* REMOVER CACTOS */
+        function removeAllObstacles(){
+
+            document
+                .querySelectorAll(".obstacle")
+                .forEach((obstacle)=>{
+                    obstacle.remove();
+                });
+        }
+
+        /* INICIAR NOVA PARTIDA */
+        function startNewRound(){
+
+            gameGeneration++;
+
+            removeAllObstacles();
+
+            score = 0;
+
+            scoreElement.innerText =
+                "0";
+
+            gameSpeed =
+                initialGameSpeed;
+
+            resetDino();
+
+            gameOver = false;
+            gameStarted = true;
+
+            const currentGeneration =
+                gameGeneration;
+
+            /*
+            Pequeno tempo antes do primeiro
+            cacto aparecer.
+            */
+            setTimeout(()=>{
+
+                createObstacle(
+                    currentGeneration
+                );
+
+            },800);
+        }
+
+        /* INICIAR PELA TELA INICIAL */
+        function startGame(){
+
+            if(gameStarted){
+                return;
+            }
+
+            startScreen.classList.add(
+                "hidden"
+            );
+
+            gameOverScreen.classList.remove(
+                "show"
+            );
+
+            startNewRound();
+        }
+
+        /* REINICIAR DEPOIS DO GAME OVER */
+        function restartGame(){
+
+            gameOverScreen.classList.remove(
+                "show"
+            );
+
+            startNewRound();
+        }
+
+        /* COMEÇAR PULO */
         function startJump(){
 
-            if(gameOver){
+            if(
+                !gameStarted ||
+                gameOver
+            ){
                 return;
             }
 
@@ -741,12 +1012,10 @@
 
                 verticalSpeed =
                     initialJumpForce;
-
             }
-
         }
 
-        /* SOLTAR O BOTÃO DO PULO */
+        /* SOLTAR BOTÃO DO PULO */
         function stopJump(){
 
             if(!jumpButtonPressed){
@@ -756,11 +1025,8 @@
             jumpButtonPressed = false;
 
             /*
-            Quando o botão é solto enquanto
-            o dinossauro ainda está subindo,
-            a velocidade é reduzida.
-
-            Isso cria o pulo curto.
+            Reduz a subida ao soltar rápido,
+            criando um pulo mais baixo.
             */
             if(
                 isJumping &&
@@ -769,14 +1035,87 @@
                 verticalSpeed *=
                     jumpCutMultiplier;
             }
-
         }
 
-        /* PRESSIONAR TECLADO */
+        /* FINALIZAR PARTIDA */
+        function finishGame(){
+
+            if(gameOver){
+                return;
+            }
+
+            gameOver = true;
+            gameStarted = false;
+
+            /*
+            Invalida os temporizadores
+            da partida atual.
+            */
+            gameGeneration++;
+
+            stopJump();
+
+            finalScoreElement.innerText =
+                score;
+
+            gameOverScreen.classList.add(
+                "show"
+            );
+
+            setTimeout(()=>{
+                restartButton.focus();
+            },100);
+        }
+
+        /* CONTROLE POR TECLADO */
         document.addEventListener(
             "keydown",
             (event)=>{
 
+                /*
+                Evita repetições da tecla Enter.
+                */
+                if(
+                    event.code === "Enter" &&
+                    event.repeat
+                ){
+                    return;
+                }
+
+                /*
+                Iniciar na tela inicial.
+                */
+                if(
+                    !gameStarted &&
+                    !gameOver &&
+                    !startScreen.classList.contains("hidden")
+                    &&
+                    event.code === "Enter"
+                ){
+                    event.preventDefault();
+
+                    startGame();
+
+                    return;
+                }
+
+                /*
+                Reiniciar depois do Game Over.
+                */
+                if(
+                    gameOver &&
+                    event.code === "Enter"
+                ){
+                    event.preventDefault();
+
+                    restartGame();
+
+                    return;
+                }
+
+                /*
+                Pular com Espaço ou Seta.
+                */
                 if(
                     event.code === "Space" ||
                     event.code === "ArrowUp"
@@ -787,11 +1126,9 @@
                         startJump();
                     }
                 }
-
             }
         );
 
-        /* SOLTAR TECLADO */
         document.addEventListener(
             "keyup",
             (event)=>{
@@ -804,23 +1141,33 @@
 
                     stopJump();
                 }
-
             }
         );
 
-        /* CLIQUE OU TOQUE */
+        /* CLIQUE OU TOQUE NO JOGO */
         game.addEventListener(
             "pointerdown",
             (event)=>{
 
+                if(
+                    event.target.closest("button")
+                ){
+                    return;
+                }
+
+                if(
+                    !gameStarted ||
+                    gameOver
+                ){
+                    return;
+                }
+
                 event.preventDefault();
 
                 startJump();
-
             }
         );
 
-        /* SOLTAR CLIQUE OU TOQUE */
         document.addEventListener(
             "pointerup",
             ()=>{
@@ -835,7 +1182,6 @@
             }
         );
 
-        /* EVITAR BOTÃO PRESO */
         window.addEventListener(
             "blur",
             ()=>{
@@ -843,51 +1189,80 @@
             }
         );
 
+        /* BOTÃO INICIAR */
+        startButton.addEventListener(
+            "pointerdown",
+            (event)=>{
+                event.stopPropagation();
+            }
+        );
+
+        startButton.addEventListener(
+            "click",
+            (event)=>{
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                startGame();
+            }
+        );
+
+        /* BOTÃO JOGAR NOVAMENTE */
+        restartButton.addEventListener(
+            "pointerdown",
+            (event)=>{
+                event.stopPropagation();
+            }
+        );
+
+        restartButton.addEventListener(
+            "click",
+            (event)=>{
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                restartGame();
+            }
+        );
+
         /* ATUALIZAR O PULO */
         function updateJump(){
 
             if(
-                isJumping &&
-                !gameOver
+                gameStarted &&
+                !gameOver &&
+                isJumping
             ){
-
-                /*
-                Movimenta verticalmente
-                o dinossauro.
-                */
                 dinoPosition +=
                     verticalSpeed;
 
-                /* Aplicar gravidade */
-                verticalSpeed -= gravity;
+                verticalSpeed -=
+                    gravity;
 
-                /* Verificar o chão */
                 if(
                     dinoPosition <=
                     groundPosition
                 ){
-
                     dinoPosition =
                         groundPosition;
 
                     verticalSpeed = 0;
                     isJumping = false;
                     jumpButtonPressed = false;
-
                 }
 
                 dino.style.bottom =
                     dinoPosition + "px";
-
             }
 
             requestAnimationFrame(
                 updateJump
             );
-
         }
 
-        /* AJUSTAR EM CASO DE REDIMENSIONAMENTO */
+        /* AJUSTAR AO REDIMENSIONAR */
         window.addEventListener(
             "resize",
             ()=>{
@@ -902,41 +1277,51 @@
 
                     dino.style.bottom =
                         dinoPosition + "px";
-
                 }
-
             }
         );
 
         /* PONTUAÇÃO */
-        const scoreInterval =
-            setInterval(()=>{
+        setInterval(()=>{
 
-                if(gameOver){
-                    return;
-                }
+            /*
+            A pontuação só aumenta se
+            a partida estiver acontecendo.
+            */
+            if(
+                !gameStarted ||
+                gameOver
+            ){
+                return;
+            }
 
-                score++;
+            score++;
 
-                scoreElement.innerText =
-                    score;
+            scoreElement.innerText =
+                score;
 
-                /*
-                Aumentar lentamente a velocidade.
+            /*
+            Aumentar lentamente a velocidade.
+            */
+            if(score % 200 === 0){
+                gameSpeed += 0.25;
+            }
 
-                A cada 200 pontos, a velocidade
-                aumenta 0.25.
-                */
-                if(score % 200 === 0){
-                    gameSpeed += 0.25;
-                }
+        },100);
 
-            },100);
+        /* CRIAR CACTO */
+        function createObstacle(generation){
 
-        /* CRIAR OBSTÁCULOS */
-        function createObstacle(){
-
-            if(gameOver){
+            /*
+            Não criar cactos antes do início,
+            depois do Game Over ou se o
+            temporizador for de outra partida.
+            */
+            if(
+                !gameStarted ||
+                gameOver ||
+                generation !== gameGeneration
+            ){
                 return;
             }
 
@@ -947,7 +1332,7 @@
                 "obstacle"
             );
 
-            /* Escolher tamanho aleatório */
+            /* Escolher tamanho do cacto */
             const type =
                 obstacleTypes[
                     Math.floor(
@@ -967,7 +1352,7 @@
             );
 
             /*
-            O cacto começa fora da tela,
+            Começar fora da tela,
             no lado direito.
             */
             let position =
@@ -976,41 +1361,38 @@
             obstacle.style.left =
                 position + "px";
 
-            /* MOVIMENTAR CACTO */
+            /* MOVIMENTAR O CACTO */
             const move =
                 setInterval(()=>{
 
-                    if(gameOver){
-
+                    if(
+                        !gameStarted ||
+                        gameOver ||
+                        generation !== gameGeneration
+                    ){
                         clearInterval(move);
+
+                        obstacle.remove();
 
                         return;
                     }
 
-                    /*
-                    Diminuir left faz o cacto
-                    andar para a esquerda.
-                    */
-                    position -= gameSpeed;
+                    position -=
+                        gameSpeed;
 
                     obstacle.style.left =
                         position + "px";
 
-                    /* ÁREAS DE COLISÃO */
                     const obstacleRect =
                         obstacle.getBoundingClientRect();
 
                     const dinoRect =
                         dino.getBoundingClientRect();
 
-                    /*
-                    Margens para deixar a colisão
-                    mais justa.
-                    */
+                    /* AJUSTES DA COLISÃO */
                     const dinoPaddingX = 8;
                     const dinoPaddingTop = 5;
                     const dinoPaddingBottom = 4;
-
                     const obstaclePaddingX = 2;
 
                     /* DETECTAR COLISÃO */
@@ -1040,60 +1422,51 @@
                         dinoRect.top +
                             dinoPaddingTop
                     ){
-
-                        gameOver = true;
-
-                        clearInterval(
-                            scoreInterval
-                        );
-
-                        alert(
-                            "GAME OVER!\n\n" +
-                            "Pontuação: " +
-                            score
-                        );
-
+                        finishGame();
                     }
 
                     /*
-                    Remover somente quando o
-                    cacto sair pelo lado esquerdo.
+                    Remover o cacto depois
+                    que sair da tela.
                     */
                     if(position < -150){
 
                         clearInterval(move);
 
                         obstacle.remove();
-
                     }
 
                 },20);
 
             /*
-            Tempo até o próximo obstáculo.
-
-            Mínimo: 1 segundo
-            Máximo: 3 segundos
+            Sortear quando o próximo
+            cacto será criado.
             */
             const nextSpawn =
                 Math.random() * 2000 + 1000;
 
-            setTimeout(
-                createObstacle,
-                nextSpawn
-            );
+            setTimeout(()=>{
 
+                createObstacle(
+                    generation
+                );
+
+            },nextSpawn);
         }
 
-        /* INICIAR O JOGO */
-        dino.style.bottom =
-            groundPosition + "px";
+        /* PREPARAR O JOGO */
+        resetDino();
 
         updateJump();
 
-        createObstacle();
+        /*
+        Não criamos cacto aqui.
 
+        O primeiro cacto será criado
+        somente ao clicar em Iniciar jogo.
+        */
     </script>
 
 </body>
+
 </html>
